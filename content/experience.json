@@ -1,0 +1,35 @@
+[
+  {
+    "role": "President",
+    "organization": "Data Science & AI Club, NIT Agartala",
+    "period": "May 2026 – Present",
+    "location": "Agartala, Tripura",
+    "highlights": [
+      "Directing a 50+ member club across technical, outreach, and events verticals",
+      "Grew active membership by 35% by restructuring onboarding and engagement workflows",
+      "Planning technical workshops on ML and Data Engineering targeting 100+ students"
+    ]
+  },
+  {
+    "role": "Vice President",
+    "organization": "Data Science & AI Club, NIT Agartala",
+    "period": "Jan 2026 – May 2026",
+    "location": "Agartala, Tripura",
+    "highlights": [
+      "Organized 2 technical workshops and a hackathon for 45+ members",
+      "Ran outreach campaign reaching 1000+ students through WizeAI partnership",
+      "Managed DSAI Unplugged and Aispire 2.0 with 400+ combined participants"
+    ]
+  },
+  {
+    "role": "Team Leader",
+    "organization": "Smart India Hackathon (SIH 2025)",
+    "period": "Nov 2025",
+    "location": "NIT Agartala",
+    "highlights": [
+      "Built AI-Powered Farmers Assistant (React, Node.js, Tailwind CSS)",
+      "Led team of 6 to clear college-level round and qualify for regionals",
+      "Ran daily check-ins and code reviews, standardizing interfaces"
+    ]
+  }
+]

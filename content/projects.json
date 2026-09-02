@@ -1,0 +1,29 @@
+[
+  {
+    "title": "Trackit",
+    "description": "Real-time Linux system monitor parsing /proc filesystem directly. Sub-second polling, 1.3% CPU footprint, live scrolling graphs for CPU, memory, network, and process metrics.",
+    "tech": ["C++", "OpenGL", "Dear ImGui", "Linux /proc"],
+    "github": "https://github.com/Ashish-331",
+    "live": "",
+    "image": "/images/projects/trackit.png",
+    "featured": true
+  },
+  {
+    "title": "Panopteez",
+    "description": "End-to-end metrics pipeline: C++ agents stream CPU/network/process data to a Node/Express collector via authenticated HTTP API, stored in PostgreSQL. Containerised 5-agent topology with Docker Compose.",
+    "tech": ["C++", "Node.js", "Express", "Next.js", "PostgreSQL", "Prisma", "Docker"],
+    "github": "https://github.com/Ashish-331",
+    "live": "",
+    "image": "/images/projects/panopteez.png",
+    "featured": true
+  },
+  {
+    "title": "AI Farmers Assistant (SIH 2025)",
+    "description": "AI-powered web platform with LLM chatbot for farmers — compares live market prices and delivers crop suggestions. Led a team of 6 to ship the full prototype.",
+    "tech": ["React", "Node.js", "Tailwind CSS", "LLM API"],
+    "github": "",
+    "live": "",
+    "image": "/images/projects/sih-farmers.png",
+    "featured": true
+  }
+]
