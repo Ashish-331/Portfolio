@@ -8,8 +8,9 @@ import type { ChatMessage } from '@/lib/types';
 const STARTER_COMMANDS = [
   { cmd: './inspect --trackit-overhead', query: 'How does Trackit achieve a 1.3% CPU footprint using Linux /proc and POSIX buffers?' },
   { cmd: './inspect --panopteez-cluster', query: 'Explain the Panopteez 5-agent distributed ingestion architecture and PostgreSQL batching.' },
-  { cmd: './inspect --competitive-ratings', query: 'Summarize Ashish’s LeetCode (350+) and CodeChef (Global Rank 418) ratings.' },
-  { cmd: './inspect --systems-strengths', query: 'Why hire Ashish for low-level systems programming or backend engineering roles?' },
+  { cmd: './inspect --redline-engine', query: 'Explain the RedLine enterprise contract reconciliation engine with Gemini 2.0 DACC and BigQuery ERP.' },
+  { cmd: './inspect --movienator-bayesian', query: 'How does Movienator utilize vectorized Bayesian inference and LogSumExp across 50,625 films?' },
+  { cmd: './inspect --perigee-retrieval', query: 'How does Perigee implement hybrid RRF search and zero-downtime atomic pointer swapping?' },
 ];
 
 function FormattedMarkdown({ text }: { text: string }) {

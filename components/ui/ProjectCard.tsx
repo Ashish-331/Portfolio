@@ -12,7 +12,6 @@ import {
   FiActivity,
   FiLayers,
   FiBarChart2,
-  FiAward,
   FiBookOpen,
 } from 'react-icons/fi';
 import ImagePlaceholder from './ImagePlaceholder';
@@ -30,7 +29,7 @@ export default function ProjectCard({
   const { toast } = useToast();
   const [copied, setCopied] = useState(false);
   const [activeTab, setActiveTab] = useState<'preview' | 'arch' | 'benchmarks'>('preview');
-  const [panopteezTab, setPanopteezTab] = useState<'preview' | 'topology'>('preview');
+  const [secondaryTab, setSecondaryTab] = useState<'preview' | 'arch'>('arch');
 
   const copyCloneCmd = (repoUrl: string) => {
     const cmd = `git clone ${repoUrl}.git`;
@@ -41,7 +40,9 @@ export default function ProjectCard({
   };
 
   const isPanopteez = project.title.toLowerCase().includes('panopteez');
-  const isFarmers = project.title.toLowerCase().includes('farmer');
+  const isRedLine = project.title.toLowerCase().includes('redline');
+  const isMovienator = project.title.toLowerCase().includes('movienator');
+  const isPerigee = project.title.toLowerCase().includes('perigee');
 
   if (flagship) {
     return (
@@ -307,7 +308,7 @@ export default function ProjectCard({
     );
   }
 
-  // Secondary Project Cards: Panopteez & SIH Farmers
+  // Secondary Project Cards (Panopteez, RedLine, Movienator, Perigee)
   return (
     <motion.div
       initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 12 }}
@@ -319,81 +320,122 @@ export default function ProjectCard({
       <div>
         {/* Media Preview Header */}
         <div className="p-4 bg-gray-50/80 dark:bg-[#0a0d16] border-b border-gray-200/80 dark:border-slate-800/80">
-          {isPanopteez ? (
-            <div>
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-[10px] font-mono uppercase text-gray-400">Cluster View:</span>
-                <div className="flex gap-1 text-[10px] font-mono">
-                  <button
-                    onClick={() => setPanopteezTab('preview')}
-                    className={`px-2 py-0.5 rounded cursor-pointer ${
-                      panopteezTab === 'preview'
-                        ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-semibold'
-                        : 'text-gray-400 hover:text-gray-600'
-                    }`}
-                  >
-                    Screenshot
-                  </button>
-                  <button
-                    onClick={() => setPanopteezTab('topology')}
-                    className={`px-2 py-0.5 rounded cursor-pointer ${
-                      panopteezTab === 'topology'
-                        ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-semibold'
-                        : 'text-gray-400 hover:text-gray-600'
-                    }`}
-                  >
-                    Topology
-                  </button>
-                </div>
-              </div>
-
-              {panopteezTab === 'preview' ? (
-                <ImagePlaceholder
-                  src={project.image}
-                  alt={`${project.title} Screenshot`}
-                  label={`${project.title} Dashboard`}
-                />
-              ) : (
-                <div className="aspect-video rounded-md bg-[#090d14] border border-slate-800 p-4 font-mono text-[11px] flex flex-col justify-between">
-                  <div className="flex justify-between items-center text-emerald-400 border-b border-slate-800 pb-1.5">
-                    <span>5-Node Distributed Topology</span>
-                    <span className="text-[10px] text-gray-400">Docker Compose</span>
-                  </div>
-                  <div className="grid grid-cols-4 gap-1 text-center py-2">
-                    {['Agent 01', 'Agent 02', 'Agent 03', 'Agent 04'].map((node) => (
-                      <div key={node} className="p-1 rounded bg-slate-900 border border-slate-800 text-[10px] text-gray-300">
-                        <span className="text-emerald-400 block">C++ Daemon</span>
-                        {node}
-                      </div>
-                    ))}
-                  </div>
-                  <div className="text-center text-emerald-400 text-xs">↓ Authenticated REST Payloads ↓</div>
-                  <div className="p-1.5 rounded bg-slate-900 border border-emerald-500/30 text-center text-[10px] text-gray-200">
-                    Node/Express Ingestion Collector ➡️ PostgreSQL (Prisma)
-                  </div>
-                </div>
-              )}
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-[10px] font-mono uppercase text-gray-400">Architecture View:</span>
+            <div className="flex gap-1 text-[10px] font-mono">
+              <button
+                onClick={() => setSecondaryTab('arch')}
+                className={`px-2 py-0.5 rounded cursor-pointer ${
+                  secondaryTab === 'arch'
+                    ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-semibold'
+                    : 'text-gray-400 hover:text-gray-600'
+                }`}
+              >
+                Blueprint
+              </button>
+              <button
+                onClick={() => setSecondaryTab('preview')}
+                className={`px-2 py-0.5 rounded cursor-pointer ${
+                  secondaryTab === 'preview'
+                    ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-semibold'
+                    : 'text-gray-400 hover:text-gray-600'
+                }`}
+              >
+                Overview
+              </button>
             </div>
-          ) : isFarmers ? (
-            /* SIH Farmers Hackathon Winner Preview */
-            <div className="aspect-video rounded-md bg-gradient-to-br from-amber-500/5 via-emerald-500/5 to-slate-900/40 border border-amber-500/30 p-4 flex flex-col justify-between select-none">
-              <div className="flex items-center justify-between">
-                <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-600 dark:text-amber-400 text-[10px] font-semibold border border-amber-500/30">
-                  <FiAward className="w-3 h-3" /> SIH 2025 1ST PLACE WINNER
-                </span>
-                <span className="text-[10px] font-mono text-gray-400">College Round</span>
+          </div>
+
+          {secondaryTab === 'preview' && isPanopteez ? (
+            <ImagePlaceholder
+              src={project.image}
+              alt={`${project.title} Screenshot`}
+              label={`${project.title} Dashboard`}
+            />
+          ) : isPanopteez ? (
+            /* Panopteez 5-Node Topology Blueprint */
+            <div className="aspect-video rounded-md bg-[#090d14] border border-slate-800 p-3.5 font-mono text-[11px] flex flex-col justify-between">
+              <div className="flex justify-between items-center text-emerald-400 border-b border-slate-800 pb-1.5">
+                <span>5-Node Distributed Topology</span>
+                <span className="text-[10px] text-gray-400">Docker Compose</span>
               </div>
-              <div className="space-y-1">
-                <h4 className="font-semibold text-sm text-gray-900 dark:text-white">
-                  Agricultural Intelligence Suite
-                </h4>
-                <p className="text-[11px] text-gray-500 dark:text-gray-400 leading-snug">
-                  Mandi pricing feeds • Soil classifier • Bilingual advisory system
-                </p>
+              <div className="grid grid-cols-4 gap-1 text-center py-2">
+                {['Host-01', 'Host-02', 'Host-03', 'Host-04'].map((node) => (
+                  <div key={node} className="p-1 rounded bg-slate-900 border border-slate-800 text-[10px] text-gray-300">
+                    <span className="text-emerald-400 block text-[9px]">C++ Daemon</span>
+                    {node}
+                  </div>
+                ))}
               </div>
-              <div className="flex items-center justify-between text-[10px] font-mono text-gray-400 pt-2 border-t border-gray-200 dark:border-slate-800">
-                <span>Team Leader: 6 engineers</span>
-                <span className="text-emerald-500 font-semibold">Qualified for Regionals</span>
+              <div className="text-center text-emerald-400 text-xs">↓ Authenticated REST Payloads ↓</div>
+              <div className="p-1.5 rounded bg-slate-900 border border-emerald-500/30 text-center text-[10px] text-gray-200">
+                Node/Express Ingestion Collector ➡️ PostgreSQL (Prisma)
+              </div>
+            </div>
+          ) : isRedLine ? (
+            /* RedLine Enterprise Multi-Agent Blueprint */
+            <div className="aspect-video rounded-md bg-[#090d14] border border-slate-800 p-3.5 font-mono text-[11px] flex flex-col justify-between select-none">
+              <div className="flex justify-between items-center text-emerald-400 border-b border-slate-800 pb-1.5">
+                <span>Enterprise Multi-Agent Pipeline</span>
+                <span className="text-[10px] text-gray-400">Gemini 2.0 DACC</span>
+              </div>
+              <div className="p-1.5 rounded bg-slate-900 border border-slate-800 text-[10px] text-gray-300 text-center">
+                Unstructured Contracts (MSAs, SOWs) + Scanned Invoices
+              </div>
+              <div className="text-center text-emerald-400 text-xs">↓ Dynamic Adaptive Context Caching ↓</div>
+              <div className="grid grid-cols-2 gap-1.5 text-center text-[10px]">
+                <div className="p-1.5 rounded bg-slate-900 border border-slate-800 text-gray-300">
+                  <span className="text-emerald-400 block text-[9px]">Legal Specialist</span>
+                  Function Calling
+                </div>
+                <div className="p-1.5 rounded bg-slate-900 border border-slate-800 text-gray-300">
+                  <span className="text-emerald-400 block text-[9px]">BigQuery ERP</span>
+                  Parameterized Tools
+                </div>
+              </div>
+              <div className="p-1 rounded bg-emerald-950/40 border border-emerald-500/30 text-center text-[10px] text-emerald-300 font-semibold">
+                Deterministic Decimal Math • Zero Hallucinations
+              </div>
+            </div>
+          ) : isMovienator ? (
+            /* Movienator Bayesian Engine Blueprint */
+            <div className="aspect-video rounded-md bg-[#090d14] border border-slate-800 p-3.5 font-mono text-[11px] flex flex-col justify-between select-none">
+              <div className="flex justify-between items-center text-emerald-400 border-b border-slate-800 pb-1.5">
+                <span>Vectorized Bayesian Engine</span>
+                <span className="text-[10px] text-gray-400">Active Learning</span>
+              </div>
+              <div className="p-1.5 rounded bg-slate-900 border border-slate-800 text-[10px] text-gray-300 flex justify-between">
+                <span>Indexed Catalog:</span>
+                <span className="text-emerald-400 font-semibold">50,625 Films (19 Industries)</span>
+              </div>
+              <div className="text-center text-emerald-400 text-xs">↓ NumPy Compressed Attribute Matrix (.npz) ↓</div>
+              <div className="p-1.5 rounded bg-slate-900 border border-slate-800 text-[10px] text-gray-200 text-center">
+                LogSumExp Posterior Update + Laplace Smoothing
+              </div>
+              <div className="p-1 rounded bg-amber-950/30 border border-amber-500/30 text-center text-[10px] text-amber-300 font-semibold">
+                Mutual Information (Shannon Entropy) Question Picker
+              </div>
+            </div>
+          ) : isPerigee ? (
+            /* Perigee Search Engine Blueprint */
+            <div className="aspect-video rounded-md bg-[#090d14] border border-slate-800 p-3.5 font-mono text-[11px] flex flex-col justify-between select-none">
+              <div className="flex justify-between items-center text-emerald-400 border-b border-slate-800 pb-1.5">
+                <span>Hybrid RRF Retrieval Engine</span>
+                <span className="text-[10px] text-gray-400">Reciprocal Rank Fusion</span>
+              </div>
+              <div className="grid grid-cols-2 gap-1 text-center text-[10px]">
+                <div className="p-1.5 rounded bg-slate-900 border border-slate-800 text-gray-300">
+                  <span className="text-emerald-400 block text-[9px]">Dense Vectors</span>
+                  384d SQLite BLOBs
+                </div>
+                <div className="p-1.5 rounded bg-slate-900 border border-slate-800 text-gray-300">
+                  <span className="text-emerald-400 block text-[9px]">Sparse Match</span>
+                  BM25 Lexical Score
+                </div>
+              </div>
+              <div className="text-center text-emerald-400 text-xs">↓ RRF Ranking (k=60) + SQL Hard Pre-Filters ↓</div>
+              <div className="p-1.5 rounded bg-slate-900 border border-emerald-500/30 text-center text-[10px] text-gray-200">
+                Zero-Downtime Atomic Index Pointer Swapping in Memory
               </div>
             </div>
           ) : (
@@ -459,11 +501,7 @@ export default function ProjectCard({
               <FiCopy className="w-3 h-3" /> clone
             </button>
           </div>
-        ) : (
-          <span className="text-xs font-mono text-gray-500 inline-flex items-center gap-1">
-            <FiCheck className="text-emerald-500" /> Hackathon Project Code
-          </span>
-        )}
+        ) : null}
 
         {isPanopteez && (
           <Link

@@ -31,6 +31,40 @@ Panopteez is an end-to-end distributed telemetry and metric aggregation system:
 - **Repository:** Explore the source at [github.com/Ashish-331/Panopteez](https://github.com/Ashish-331/Panopteez).`;
   }
 
+  if (query.includes('redline') || query.includes('reconciliation') || query.includes('bigquery') || query.includes('contract')) {
+    return `### RedLine Enterprise Financial & Contract Reconciliation Engine
+
+RedLine is an autonomous multimodal multi-agent reconciliation engine designed for Google Cloud Consulting:
+
+- **Gemini 2.0 DACC:** Dynamic Adaptive Context Caching caches 100+ page legal agreements (MSAs, SOWs) on Vertex AI, slashing query token costs by ~80%.
+- **Zero Raw SQL Boundaries:** Enforces strict parameterized BigQuery ERP tool calls with automated Data Loss Prevention (DLP) masking, preventing injection and credential exposure.
+- **Deterministic Math Engine:** Decouples unstructured LLM reasoning from financial calculations using Python \`Decimal\` fixed-point arithmetic to completely eliminate math hallucinations.
+- **Audit Sign-off Governance:** Thread-isolated durable checkpointing with Optimistic Concurrency Control (OCC) for enterprise compliance.
+- **Repository:** Explore the source at [github.com/Ashish-331/RedLine](https://github.com/Ashish-331/RedLine).`;
+  }
+
+  if (query.includes('movienator') || query.includes('bayesian') || query.includes('cinema') || query.includes('akinator')) {
+    return `### Movienator Vectorized Bayesian Active Learning Engine
+
+Movienator is an active learning 20-questions deduction engine covering 50,625 Indian cinema records across 19 regional industries:
+
+- **Vectorized Bayesian Inference:** Applies Bayes' theorem with Laplace smoothing and \`LogSumExp\` to maintain numerical stability across floating-point probabilities.
+- **Information Gain Optimization:** Selects optimal discriminating questions by calculating Mutual Information and maximizing Shannon Entropy reduction.
+- **Compressed Sparse Storage:** Ingests attributes into NumPy compressed matrices (\`.npz\`) and SQLite index caches for sub-10ms question updates.
+- **Repository:** Explore the source at [github.com/Ashish-331/movienator](https://github.com/Ashish-331/movienator).`;
+  }
+
+  if (query.includes('perigee') || query.includes('search') || query.includes('rrf') || query.includes('retrieval')) {
+    return `### Perigee Autonomous Career Discovery Engine
+
+Perigee is a high-concurrency career platform and hybrid search engine:
+
+- **Hybrid Retrieval (RRF k=60):** Fuses dense 384-dimensional vector embeddings with sparse BM25 lexical matching via Reciprocal Rank Fusion, bounded by SQL pre-filters.
+- **Zero-Downtime Pointer Swapping:** Memory index pointer swapping (\`SearchIndexSnapshot\`) enables continuous multi-feed background ingestion without query latency spikes.
+- **SQLite BLOB Vector Cache:** Caches dense embeddings as binary BLOBs with incremental schema migrations, reducing indexing cost from O(Total) to O(New).
+- **Repository:** Explore the source at [github.com/Ashish-331/Perigee](https://github.com/Ashish-331/Perigee).`;
+  }
+
   if (query.includes('competitive') || query.includes('rating') || query.includes('leetcode') || query.includes('codechef')) {
     return `### Competitive Programming & Problem Solving
 
@@ -49,18 +83,21 @@ Why Ashish is an exceptional candidate for Systems & Backend Engineering roles:
 1. **Kernel & POSIX Intuition:** Unlike developers who rely exclusively on high-level wrappers, Ashish understands Linux kernel interfaces, memory mappings, and system call boundaries.
 2. **Proven Low-Resource Architecture:** Built Trackit to run at 1.3% CPU by bypassing fork costs and eliminating runtime heap churn.
 3. **End-to-End Distributed Systems:** Designed Panopteez from C++ daemon metrics gathering through containerized Express ingestion to relational storage.
-4. **Leadership & Communication:** President of the Data Science & AI Club (leading 50+ peers) and SIH 2025 college round winner leading a 6-member team.
-5. **Availability:** Actively seeking **Summer 2025 / 2026 Systems & Backend Software Engineering Internships**.`;
+4. **Algorithmic Depth:** Designed probabilistic active learning engines (Movienator) and hybrid search retrieval systems (Perigee).
+5. **Leadership & Communication:** President of the Data Science & AI Club (leading 50+ peers) and Student of the Year recipient.
+6. **Availability:** Actively seeking **Summer 2025 / 2026 Systems & Backend Software Engineering Internships**.`;
   }
 
   return `### Ashish Kumar Singh — Systems & Backend Engineer
 
 - **Education:** 3rd Year B.Tech CSE @ National Institute of Technology Agartala (**CGPA: 8.94 / 10.0**).
-- **Core Specialization:** Low-overhead Linux systems programming in C++17, kernel \`/proc\` parsing, distributed backend telemetry, and containerization.
+- **Core Specialization:** Low-overhead Linux systems programming in C++17, kernel \`/proc\` parsing, distributed backend telemetry, and active learning engines.
 - **Featured Projects:**
   - **Trackit:** Real-time Linux monitor in C++17, Dear ImGui & OpenGL 3.3 (1.3% CPU, 89.4MB RSS).
   - **Panopteez:** 5-node distributed metric pipeline with C++ daemons, Node/Express, and PostgreSQL.
-  - **AI Farmers Assistant:** SIH 2025 college winner (6-member team leader).
+  - **RedLine:** Enterprise financial reconciliation engine with Gemini 2.0 DACC & BigQuery ERP.
+  - **Movienator:** 50,625-movie vectorized Bayesian active learning deduction engine.
+  - **Perigee:** Autonomous career search engine with hybrid RRF retrieval & zero-downtime pointer swapping.
 - **Contact:** [ashishsingh.cpr.edu@gmail.com](mailto:ashishsingh.cpr.edu@gmail.com) • [LinkedIn](https://www.linkedin.com/in/ashish-1-singh/) • [GitHub](https://github.com/Ashish-331)`;
 }
 
@@ -95,7 +132,6 @@ export async function POST(req: NextRequest) {
 
     const stream = new ReadableStream({
       async start(controller) {
-        // Split into natural word/line tokens for realistic smooth typing effect
         const words = answer.split(/(\s+)/);
         for (const token of words) {
           const payload = JSON.stringify({

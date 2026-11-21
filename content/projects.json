@@ -12,8 +12,8 @@
   },
   {
     "title": "Panopteez",
-    "description": "An end-to-end distributed observability pipeline. C++ daemon agents gather host system metrics and stream authenticated HTTP payloads to a Node/Express ingestion collector, persisting data into PostgreSQL via Prisma ORM. Orchestrated into a multi-agent cluster using Docker Compose.",
-    "tech": ["C++", "Node.js", "Express", "PostgreSQL", "Prisma", "Docker Compose", "Next.js"],
+    "description": "An end-to-end distributed observability pipeline. C++ daemon agents gather host system metrics and stream authenticated HTTP payloads to a Node/Express ingestion collector, persisting time-series telemetry into PostgreSQL via Prisma ORM. Orchestrated into a multi-agent cluster using Docker Compose.",
+    "tech": ["C++", "Node.js", "Express", "PostgreSQL", "Prisma", "Docker Compose"],
     "github": "https://github.com/Ashish-331/Panopteez",
     "live": "",
     "image": "/images/projects/panopteez.png",
@@ -22,14 +22,36 @@
     "metrics": "5-Node Docker Cluster • Ingestion API • PostgreSQL"
   },
   {
-    "title": "AI Farmers Assistant",
-    "description": "Agricultural intelligence platform built for Smart India Hackathon (SIH 2025). Integrates live mandi commodity pricing feeds, soil-climate classification, and bilingual advisory chat. Led a 6-member student engineering team to win the college selection round.",
-    "tech": ["React", "Node.js", "Express", "Tailwind CSS", "REST APIs"],
-    "github": "https://github.com/Ashish-331",
+    "title": "RedLine",
+    "description": "An enterprise-grade multimodal multi-agent contract and financial reconciliation engine designed for Google Cloud Consulting. Reconciles complex legal agreements (MSAs, SOWs) and vendor invoices against BigQuery ERP ledgers. Implements Gemini 2.0 Dynamic Adaptive Context Caching (DACC), zero raw SQL parameterized tool boundaries with DLP sanitization, and strictly decouples semantic extraction from deterministic Decimal arithmetic to eliminate math hallucinations.",
+    "tech": ["Python 3.12", "FastAPI", "Vertex AI", "BigQuery ERP", "Docker", "React"],
+    "github": "https://github.com/Ashish-331/RedLine",
     "live": "",
-    "image": "/images/projects/sih-farmers.png",
+    "image": "/images/projects/redline.png",
     "featured": true,
-    "badge": "Hackathon Winner",
-    "metrics": "SIH 2025 College Round 1st Place • Team of 6"
+    "badge": "Enterprise AI & FinTech",
+    "metrics": "Gemini 2.0 DACC • BigQuery ERP • Deterministic Decimal Math"
+  },
+  {
+    "title": "Movienator",
+    "description": "An intelligent, probabilistic 20-questions active learning deduction engine spanning 50,625 Indian cinema records across 19 regional industries. Operates a vectorized Bayesian inference engine using LogSumExp for numerical stability and maximizes Mutual Information (Shannon Entropy) to select optimal discriminating questions. Backed by NumPy compressed attribute matrices and indexed SQLite storage.",
+    "tech": ["Python 3.12", "FastAPI", "NumPy", "SQLite", "Active Learning", "React"],
+    "github": "https://github.com/Ashish-331/movienator",
+    "live": "",
+    "image": "/images/projects/movienator.png",
+    "featured": true,
+    "badge": "Bayesian Active Learning",
+    "metrics": "50,625 Films • 19 Industries • Vectorized LogSumExp Bayesian Engine"
+  },
+  {
+    "title": "Perigee",
+    "description": "An autonomous career discovery platform featuring hybrid search and continuous background feed ingestion. Combines dense 384-dimensional vector embeddings with sparse BM25 keyword matching via Reciprocal Rank Fusion (RRF k=60). Implements zero-downtime atomic index pointer swapping in memory (SearchIndexSnapshot) and incremental SQLite BLOB vector caching, ensuring high query throughput with zero latency spikes.",
+    "tech": ["Python 3.12", "FastAPI", "Hybrid Search (RRF)", "BM25", "SQLite BLOB Vectors", "Vite"],
+    "github": "https://github.com/Ashish-331/Perigee",
+    "live": "",
+    "image": "/images/projects/perigee.png",
+    "featured": true,
+    "badge": "Information Retrieval & Search",
+    "metrics": "Hybrid RRF (Dense + BM25) • Zero-Downtime Atomic Pointer Swapping"
   }
 ]

@@ -5,9 +5,9 @@
     "period": "May 2026 – Present",
     "location": "Agartala, Tripura",
     "highlights": [
-      "Directing a 50+ member club across technical, outreach, and events verticals",
+      "Directing a 50+ member club across technical, outreach, and development teams",
       "Grew active membership by 35% by restructuring onboarding and engagement workflows",
-      "Planning technical workshops on ML and Data Engineering targeting 100+ students"
+      "Planning technical workshops on ML, systems programming, and Data Engineering targeting 100+ students"
     ]
   },
   {
@@ -22,14 +22,14 @@
     ]
   },
   {
-    "role": "Team Leader",
-    "organization": "Smart India Hackathon (SIH 2025)",
-    "period": "Nov 2025",
-    "location": "NIT Agartala",
+    "role": "Technical Mentor & Project Lead",
+    "organization": "Data Science & AI Club, NIT Agartala",
+    "period": "Aug 2025 – Dec 2025",
+    "location": "Agartala, Tripura",
     "highlights": [
-      "Built AI-Powered Farmers Assistant (React, Node.js, Tailwind CSS)",
-      "Led team of 6 to clear college-level round and qualify for regionals",
-      "Ran daily check-ins and code reviews, standardizing interfaces"
+      "Mentored 50+ students on data structures, C++ systems design, and Linux kernel tooling",
+      "Led weekly problem-solving labs focusing on graph algorithms and dynamic programming",
+      "Organized code review sessions standardizing Git workflows and modular project structure"
     ]
   }
 ]

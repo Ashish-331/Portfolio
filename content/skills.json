@@ -1,8 +1,8 @@
 {
   "categories": [
-    { "name": "Languages", "skills": ["C++", "JavaScript", "TypeScript", "Python", "SQL", "Bash"] },
-    { "name": "Systems & Backend", "skills": ["Linux /proc", "Multithreading", "Node.js", "Express.js", "REST APIs", "PostgreSQL", "MySQL", "MongoDB", "Prisma"] },
-    { "name": "Frontend", "skills": ["React.js", "Next.js", "Tailwind CSS", "Redux Toolkit", "HTML/CSS"] },
-    { "name": "DevOps & Tools", "skills": ["Docker", "Docker Compose", "Git", "GitHub", "OpenGL", "Dear ImGui"] }
+    { "name": "Languages", "skills": ["C++", "Python", "TypeScript", "JavaScript", "SQL", "Bash"] },
+    { "name": "Systems & Backend", "skills": ["Linux /proc", "Multithreading", "FastAPI", "Node.js", "Express.js", "PostgreSQL", "SQLite", "Prisma", "Docker Compose"] },
+    { "name": "Data & ML Systems", "skills": ["NumPy", "Bayesian Active Learning", "Hybrid Search (RRF)", "BigQuery", "Docker"] },
+    { "name": "Frontend & Graphics", "skills": ["OpenGL", "Dear ImGui", "React.js", "Next.js", "Tailwind CSS"] }
   ]
 }

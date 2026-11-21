@@ -9,6 +9,8 @@ import type { Skills as SkillsType } from '@/lib/types';
 const CATEGORY_ICONS: Record<string, React.ReactNode> = {
   Languages: <FiCode className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />,
   'Systems & Backend': <FiCpu className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />,
+  'Data & ML Systems': <FiServer className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />,
+  'Frontend & Graphics': <FiLayers className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />,
   Frontend: <FiLayers className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />,
   'DevOps & Tools': <FiServer className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />,
 };
@@ -28,9 +30,40 @@ const SKILL_CONTEXT: Record<string, { usedIn: string; role: string; link?: strin
     usedIn: 'Trackit & Panopteez',
     role: 'Concurrent telemetry polling decoupled from UI render loops using POSIX / std::thread.',
   },
+  FastAPI: {
+    usedIn: 'RedLine, Movienator & Perigee',
+    role: 'High-throughput async Python REST API microservices with Pydantic contracts and streaming endpoints.',
+    link: '#projects',
+  },
+  NumPy: {
+    usedIn: 'Movienator',
+    role: 'Vectorized mathematical operations, sparse attribute matrices (.npz), and Shannon entropy calculations.',
+    link: '#projects',
+  },
+  SQLite: {
+    usedIn: 'Movienator & Perigee',
+    role: 'Embedded persistent storage with binary BLOB vector caches and indexed movie catalogs.',
+    link: '#projects',
+  },
+  BigQuery: {
+    usedIn: 'RedLine ERP Reconciler',
+    role: 'Cloud data warehouse integration with parameterized zero-raw-SQL tools and DLP sanitization.',
+    link: '#projects',
+  },
+  'Bayesian Active Learning': {
+    usedIn: 'Movienator',
+    role: 'Probabilistic 20-questions engine with LogSumExp numerical stability and information gain optimization.',
+    link: '#projects',
+  },
+  'Hybrid Search (RRF)': {
+    usedIn: 'Perigee',
+    role: 'Reciprocal Rank Fusion (k=60) combining 384-dimensional dense vectors with sparse BM25 lexical scores.',
+    link: '#projects',
+  },
   'Node.js': {
-    usedIn: 'Panopteez & SIH Farmers',
+    usedIn: 'Panopteez',
     role: 'Ingestion gateway and API services handling multi-agent telemetry pipelines and authentication.',
+    link: '#projects',
   },
   'Express.js': {
     usedIn: 'Panopteez Gateway',
@@ -39,37 +72,42 @@ const SKILL_CONTEXT: Record<string, { usedIn: string; role: string; link?: strin
   PostgreSQL: {
     usedIn: 'Panopteez Telemetry Store',
     role: 'Primary relational time-series database with composite indexes for sliding-window telemetry metrics.',
+    link: '#projects',
   },
   Prisma: {
     usedIn: 'Panopteez',
     role: 'Type-safe database ORM managing multi-row batched telemetry transactions.',
   },
   Docker: {
-    usedIn: 'Panopteez',
-    role: 'Containerized execution environment isolating multi-agent telemetry instances.',
+    usedIn: 'Panopteez & RedLine',
+    role: 'Containerized execution environment isolating multi-agent telemetry and multi-service systems.',
   },
   'Docker Compose': {
     usedIn: 'Panopteez 5-Node Topology',
     role: 'Automated orchestration of 4 host agents, 1 ingestion collector, and PostgreSQL database.',
+    link: '#projects',
   },
   OpenGL: {
     usedIn: 'Trackit',
     role: 'Hardware-accelerated graphics backend rendering real-time scrolling load curves at 60 FPS.',
+    link: '#projects',
   },
   'Dear ImGui': {
     usedIn: 'Trackit UI',
     role: 'Immediate-mode graphical user interface for live Linux process and resource monitoring.',
+    link: '#projects',
   },
   TypeScript: {
     usedIn: 'Panopteez & Web Platforms',
     role: 'Strict typing for distributed API contracts, backend handlers, and frontend components.',
   },
   Python: {
-    usedIn: 'Algorithms & Club Workshops',
-    role: 'Data structures experimentation, competitive scripting, and AI club mentorship sessions.',
+    usedIn: 'RedLine, Movienator & Perigee',
+    role: 'Core backend language for active learning engines, hybrid search pipelines, and multi-agent systems.',
+    link: '#projects',
   },
   'React.js': {
-    usedIn: 'Panopteez Dashboard & SIH Assistant',
+    usedIn: 'RedLine, Movienator & Panopteez',
     role: 'Component architecture, state management, and real-time dashboard visualization.',
   },
   'Next.js': {

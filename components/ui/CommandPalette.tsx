@@ -69,7 +69,7 @@ export default function CommandPalette({ isOpen, onClose, onOpenTerminal }: Comm
       id: 'nav-projects',
       category: 'Navigation',
       title: 'Projects & Systems Architecture',
-      description: 'Trackit, Panopteez, SIH Hackathon',
+      description: 'Trackit, Panopteez, RedLine, Movienator, Perigee',
       icon: <FiLayers className="w-4 h-4 text-emerald-500" />,
       perform: () => {
         router.push('/#projects');
@@ -105,7 +105,7 @@ export default function CommandPalette({ isOpen, onClose, onOpenTerminal }: Comm
       id: 'nav-experience',
       category: 'Navigation',
       title: 'Experience & Leadership',
-      description: 'President of Data Science & AI Club, SIH lead',
+      description: 'President of Data Science & AI Club, technical mentoring',
       icon: <FiBriefcase className="w-4 h-4 text-emerald-500" />,
       perform: () => {
         router.push('/#experience');
@@ -167,7 +167,31 @@ export default function CommandPalette({ isOpen, onClose, onOpenTerminal }: Comm
       title: 'Copy Trackit git clone command',
       description: 'git clone https://github.com/Ashish-331/Trackit.git',
       icon: <FiCopy className="w-4 h-4 text-sky-400" />,
-      perform: () => copyToClipboard('git clone https://github.com/Ashish-331/Trackit.git', 'clone command'),
+      perform: () => copyToClipboard('git clone https://github.com/Ashish-331/Trackit.git', 'Trackit clone'),
+    },
+    {
+      id: 'act-clone-redline',
+      category: 'Actions',
+      title: 'Copy RedLine git clone command',
+      description: 'git clone https://github.com/Ashish-331/RedLine.git',
+      icon: <FiCopy className="w-4 h-4 text-emerald-400" />,
+      perform: () => copyToClipboard('git clone https://github.com/Ashish-331/RedLine.git', 'RedLine clone'),
+    },
+    {
+      id: 'act-clone-movienator',
+      category: 'Actions',
+      title: 'Copy Movienator git clone command',
+      description: 'git clone https://github.com/Ashish-331/movienator.git',
+      icon: <FiCopy className="w-4 h-4 text-purple-400" />,
+      perform: () => copyToClipboard('git clone https://github.com/Ashish-331/movienator.git', 'Movienator clone'),
+    },
+    {
+      id: 'act-clone-perigee',
+      category: 'Actions',
+      title: 'Copy Perigee git clone command',
+      description: 'git clone https://github.com/Ashish-331/Perigee.git',
+      icon: <FiCopy className="w-4 h-4 text-amber-400" />,
+      perform: () => copyToClipboard('git clone https://github.com/Ashish-331/Perigee.git', 'Perigee clone'),
     },
     {
       id: 'act-resume',
