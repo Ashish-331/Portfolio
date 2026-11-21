@@ -1,0 +1,164 @@
+---
+title: "Panopteez: From a Single-Box Monitor to a Distributed Telemetry Pipeline"
+date: "2026-09-02"
+excerpt: "How I took my C++ kernel sampling logic from Trackit and turned it into Panopteez—a 3-tier distributed infrastructure monitor using Express 5, Prisma 7, PostgreSQL, and Next.js 16."
+tags: ["distributed-systems", "cpp", "nodejs", "docker", "postgres"]
+---
+
+After building **Trackit**, I had a standalone C++ desktop monitor that could track CPU, memory, and network stats with minimal overhead. It was fast and lightweight, but it had one obvious limitation: **it could only monitor the local machine it was running on**.
+
+In modern infrastructure, you rarely care about just one machine. You want to see the health of 5, 20, or 100 servers from a single pane of glass.
+
+Commercial solutions like Datadog or Prometheus exist, but their agent daemons can easily consume hundreds of megabytes of RAM. I wanted to see if I could take my lightweight C++ `/proc` parsing code and wire it into an end-to-end distributed observability pipeline.
+
+That became **Panopteez** (codenamed *Phoenix*). Here is how the system is designed, how the pieces fit together, and the trade-offs I navigated.
+
+---
+
+### The Three-Tier Architecture
+
+I structured Panopteez into three decoupled components:
+
+1. **`brain/` (The C++ Host Agent)**: A lightweight daemon that runs on every monitored node, collects kernel stats, and streams JSON payloads over HTTP.
+2. **`spine/` (The Metrics Collector)**: An Express 5 service that authenticates incoming metrics and writes them to PostgreSQL using Prisma.
+3. **`dashboard/` (The Observability UI)**: A Next.js 16 web application that visualizes cluster health, latency, and host heartbeats in real time.
+
+```text
+[ Node: brain1 ] (C++ Agent) ──┐
+[ Node: brain2 ] (C++ Agent) ──┼──> POST /metrics (HMAC Auth) ──> [ spine: Express 5 ]
+[ Node: brain3 ] (C++ Agent) ──┘                                           │
+                                                                   Prisma 7 Adapter
+                                                                           │
+                                                                           ▼
+[ dashboard: Next.js 16 ] <── SWR / Polling ── [ spine ] <── [ PostgreSQL 16 ]
+```
+
+---
+
+### 1. The Agent: Reusing Trackit with `libcurl`
+
+The agent (`brain/sender.cpp`) was built directly on top of Trackit's `/proc/stat` and `/proc/meminfo` parser. 
+
+Instead of rendering with Dear ImGui and OpenGL, I stripped away all graphics code and linked against `libcurl`. Every 2 seconds, the daemon:
+1. Calculates CPU usage over a 2-second interval: `da / dt`.
+2. Reads available memory from `/proc/meminfo`.
+3. Serializes a compact JSON payload: `{"host":"brain1","cpu":14.2,"mem":12735.3}`.
+4. Appends a shared authentication header (`x-agent-key`) and dispatches an HTTP POST request to the collector gateway.
+
+```cpp
+void sendMetrics(const std::string& jsonBody) {
+    CURL* curl = curl_easy_init();
+    if (!curl) return;
+
+    std::string url = getEnvOr("COLLECTOR_URL", "http://localhost:3000/metrics");
+    curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
+    curl_easy_setopt(curl, CURLOPT_POSTFIELDS, jsonBody.c_str());
+
+    struct curl_slist* headers = NULL;
+    headers = curl_slist_append(headers, "Content-Type: application/json");
+    std::string authHeader = "x-agent-key: " + getEnvOr("AGENT_KEY", "dev-secret-key");
+    headers = curl_slist_append(headers, authHeader.c_str());
+    curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
+
+    curl_easy_perform(curl);
+    curl_slist_free_all(headers);
+    curl_easy_cleanup(curl);
+}
+```
+
+Because it's compiled directly in C++ with minimal dependencies, each agent consumes under **15MB of RAM** inside its Docker container.
+
+---
+
+### 2. The Collector: Express 5, Prisma 7, and PostgreSQL
+
+The collector service (`spine/index.js`) listens for incoming agent payloads on port 3000.
+
+#### Authentication & Host Upserting
+When a POST request arrives at `/metrics`, the collector first verifies the `x-agent-key` header. If valid, it records the metric and updates the host's heartbeat:
+
+```javascript
+app.post("/metrics", async (req, res) => {
+    if (req.headers["x-agent-key"] !== VALID_KEY) {
+        return res.sendStatus(401);
+    }
+
+    const { host, cpu, mem } = req.body;
+    const hostRecord = await prisma.host.upsert({
+        where: { hostname: host },
+        update: { lastSeen: new Date() },
+        create: { hostname: host },
+    });
+
+    const recordedAt = new Date();
+    await prisma.metric.createMany({
+        data: [
+            { hostId: hostRecord.id, metricType: "cpu", value: cpu, recordedAt },
+            { hostId: hostRecord.id, metricType: "mem", value: mem, recordedAt },
+        ],
+    });
+
+    await cleanupOldMetrics();
+    res.sendStatus(200);
+});
+```
+
+#### Real-Time Heartbeats & Status Calculation
+Instead of storing a static status in the database, the collector computes whether a node is `UP` or `DOWN` dynamically based on its last heartbeat timestamp:
+
+```javascript
+app.get("/hosts", async (req, res) => {
+    const hostsList = await prisma.host.findMany();
+    const result = hostsList.map((h) => {
+        const lastSeen = h.lastSeen.getTime();
+        return {
+            host: h.hostname,
+            lastSeen,
+            status: Date.now() - lastSeen >= 5000 ? "DOWN" : "UP",
+        };
+    });
+    res.json(result);
+});
+```
+
+If an agent fails to check in within **5 seconds**, the dashboard immediately marks that host as `DOWN` with a red warning badge.
+
+#### Enforcing Retention Caps
+Timeseries telemetry can grow indefinitely. To prevent the local database from ballooning during prolonged testing, I implemented an automated retention cleaner (`cleanupOldMetrics`) that prunes the oldest records once the total count exceeds 2,000 samples.
+
+---
+
+### 3. The Dashboard: Next.js 16 with Fluid Springs
+
+The web UI (`dashboard/`) was built using **Next.js 16** (React 19, Tailwind CSS v4, and the React Compiler).
+
+Rather than standard blocky dashboard cards, I followed Apple-style fluid interface conventions:
+- **Spring Physics**: Used the `motion` package with custom spring curves instead of standard linear CSS transitions.
+- **Glassmorphic Chrome**: Translucent panels with `backdrop-filter: blur` to give subtle depth.
+- **Micro-Polling**: Polls `/hosts` and `/history` every 3 seconds to keep aggregate CPU and memory curves smooth.
+
+---
+
+### 4. Simulating the Cluster with Docker Compose
+
+Testing distributed software on a single laptop can be frustrating if you have to manually open 5 terminal tabs.
+
+Using `docker-compose.yml`, I automated the entire deployment topology:
+- 1× `postgres:16-alpine` database with automated healthcheck
+- 1× `spine` metrics collector
+- 3× `brain` agents (`brain1`, `brain2`, `brain3`) posting concurrent streams
+
+```bash
+# Spin up the entire 5-node cluster in one command:
+docker compose up -d
+```
+
+As soon as the containers boot up, the database initializes, the spine collector connects, and the agents start streaming telemetry within seconds.
+
+---
+
+### What I Learned
+
+1. **Decoupling is essential**: Separating the sampler daemon (`brain`) from the storage engine (`spine`) meant I could rewrite or restart the backend without losing agent uptime.
+2. **Driver Adapters in Prisma 7**: Transitioning from classic Prisma to `@prisma/adapter-pg` taught me how connection pools behave under bursts of concurrent container writes.
+3. **From systems to full-stack**: Trackit taught me low-level kernel interfaces; Panopteez forced me to connect low-level C++ with modern distributed backend architecture, container networking, and real-time frontend engineering.

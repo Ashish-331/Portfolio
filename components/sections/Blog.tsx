@@ -1,30 +1,74 @@
 'use client';
-import { motion } from 'framer-motion';
+
+import { useReducedMotion, motion } from 'framer-motion';
 import Link from 'next/link';
+import { FiCalendar, FiArrowRight } from 'react-icons/fi';
 import SectionHeading from '@/components/ui/SectionHeading';
 import type { BlogPost } from '@/lib/types';
 
 export default function Blog({ posts }: { posts: BlogPost[] }) {
+  const shouldReduceMotion = useReducedMotion();
   if (posts.length === 0) return null;
+
   return (
-    <section id="blog" className="py-20 lg:py-28">
-      <div className="max-w-5xl mx-auto px-6">
-        <SectionHeading title="Blog" subtitle="Thoughts and learnings" />
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {posts.slice(0, 6).map((post, i) => (
-            <motion.div key={post.slug} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.4, delay: i * 0.1 }}>
-              <Link href={`/blog/${post.slug}`}>
-                <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-6 hover:border-cyan-500/50 transition-all duration-300 hover:shadow-lg hover:shadow-cyan-500/10 h-full">
-                  <div className="flex flex-wrap gap-2 mb-3">
-                    {post.tags.map(tag => <span key={tag} className="text-xs px-2 py-0.5 rounded-full bg-cyan-50 dark:bg-cyan-900/20 text-cyan-600 dark:text-cyan-400">{tag}</span>)}
+    <section id="blog" className="py-16 sm:py-24 border-b border-gray-200/90 dark:border-slate-800/90 bg-gray-50/50 dark:bg-[#0a0d16] scroll-mt-16">
+      <div className="max-w-6xl mx-auto px-6">
+        <SectionHeading
+          title="Writing &amp; Notes"
+          subtitle="Technical documentation on POSIX internals, memory footprints, and low-level code"
+        />
+
+        <div className="grid md:grid-cols-2 gap-6 mb-8">
+          {posts.slice(0, 4).map((post, i) => (
+            <motion.div
+              key={post.slug}
+              initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 12 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.25, delay: i * 0.08, ease: 'easeOut' }}
+            >
+              <Link href={`/blog/${post.slug}`} className="block h-full group">
+                <div className="bg-white dark:bg-[#0f1422] rounded-xl border border-gray-200/90 dark:border-slate-800/90 p-6 hover:border-emerald-500/50 transition-all shadow-xs h-full flex flex-col justify-between">
+                  <div>
+                    <div className="flex flex-wrap gap-1.5 mb-3">
+                      {post.tags.map((tag) => (
+                        <span
+                          key={tag}
+                          className="text-[11px] font-mono px-2 py-0.5 rounded bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300"
+                        >
+                          #{tag}
+                        </span>
+                      ))}
+                    </div>
+                    <h3 className="font-serif font-normal text-xl mb-2.5 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors text-gray-950 dark:text-gray-50 leading-snug">
+                      {post.title}
+                    </h3>
+                    <p className="text-gray-600 dark:text-gray-400 text-xs sm:text-sm mb-4 leading-relaxed line-clamp-3">
+                      {post.excerpt}
+                    </p>
                   </div>
-                  <h3 className="font-semibold text-lg mb-2">{post.title}</h3>
-                  <p className="text-gray-600 dark:text-gray-400 text-sm mb-3 line-clamp-2">{post.excerpt}</p>
-                  <span className="text-xs text-gray-500">{post.date}</span>
+
+                  <div className="pt-4 border-t border-gray-100 dark:border-gray-800 flex items-center justify-between text-xs text-gray-500">
+                    <span className="flex items-center gap-1.5 font-medium">
+                      <FiCalendar className="w-3.5 h-3.5 text-gray-400" /> {post.date}
+                    </span>
+                    <span className="text-emerald-600 dark:text-emerald-400 font-medium flex items-center gap-1 group-hover:translate-x-0.5 transition-transform">
+                      Read Article <FiArrowRight className="w-3.5 h-3.5" />
+                    </span>
+                  </div>
                 </div>
               </Link>
             </motion.div>
           ))}
+        </div>
+
+        <div className="text-left">
+          <Link
+            href="/blog"
+            className="inline-flex items-center gap-2 text-sm font-medium text-emerald-600 dark:text-emerald-400 hover:underline"
+          >
+            Browse All Technical Articles &amp; Benchmarks →
+          </Link>
         </div>
       </div>
     </section>

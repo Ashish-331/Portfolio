@@ -1,22 +1,35 @@
 'use client';
+
+import { useSyncExternalStore } from 'react';
 import { useTheme } from 'next-themes';
-import { useEffect, useState } from 'react';
 import { FiSun, FiMoon } from 'react-icons/fi';
-import { motion } from 'framer-motion';
+
+function useHydrated() {
+  return useSyncExternalStore(
+    () => () => {},
+    () => true,
+    () => false
+  );
+}
 
 export default function ThemeToggle() {
-  const { theme, setTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => setMounted(true), []);
-  if (!mounted) return <div className="w-9 h-9" />;
+  const { resolvedTheme, setTheme } = useTheme();
+  const mounted = useHydrated();
+
+  if (!mounted) {
+    return <div className="w-7 h-7 rounded-md" />;
+  }
+
+  const isDark = resolvedTheme === 'dark';
+
   return (
-    <motion.button
-      whileTap={{ scale: 0.9 }}
-      onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-      className="p-2 rounded-lg bg-gray-200 dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-700 transition-colors"
-      aria-label="Toggle theme"
+    <button
+      onClick={() => setTheme(isDark ? 'light' : 'dark')}
+      className="p-1.5 rounded-md hover:bg-neutral-100 dark:hover:bg-neutral-800 text-neutral-500 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-100 transition-colors cursor-pointer"
+      aria-label={`Switch to ${isDark ? 'light' : 'dark'} theme`}
+      title={`Switch to ${isDark ? 'light' : 'dark'} theme`}
     >
-      {theme === 'dark' ? <FiSun className="w-5 h-5" /> : <FiMoon className="w-5 h-5" />}
-    </motion.button>
+      {isDark ? <FiSun className="w-3.5 h-3.5" /> : <FiMoon className="w-3.5 h-3.5" />}
+    </button>
   );
 }

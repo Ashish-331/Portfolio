@@ -1,0 +1,195 @@
+---
+title: "Building Trackit: Writing a Low-Overhead Linux System Monitor in C++"
+date: "2026-08-20"
+excerpt: "How I built Trackit from scratch using C++, Dear ImGui, and OpenGL—reading directly from /proc to understand how tools like htop and btop actually work under the hood."
+tags: ["cpp", "linux", "systems", "opengl"]
+---
+
+Whenever you open up your terminal on Linux and run `htop`, `btop`, or `neofetch`, you see clean live graphs of CPU percentages, memory bars, and process lists updating in real time.
+
+For a long time, I wondered: **how do these tools actually extract this data from the OS?** Do they call some secret kernel daemon? Do they constantly execute shell scripts?
+
+As a 2nd-year computer science student, I decided the best way to demystify it was to build my own system monitor from scratch in C++. That project became **Trackit**.
+
+Here is what I learned about the Linux kernel, `/proc` virtual files, and building a desktop UI that doesn't eat the CPU it's trying to measure.
+
+---
+
+### The Big Realization: Everything in Linux Really Is a File
+
+In Linux, the kernel exposes virtually all of its internal state through a pseudo-filesystem mounted at `/proc`. 
+
+These aren't real files stored on your SSD; they are virtual interfaces synthesized on-the-fly by the kernel's Virtual File System (VFS). When you read `/proc/stat`, the kernel formats its internal counters directly into text for your process.
+
+This meant I didn't need any third-party monitoring libraries or elevated root daemons. I just needed standard C++ file streams (`std::ifstream`) and string parsers.
+
+---
+
+### Calculating Real-Time CPU Usage from `/proc/stat`
+
+The first challenge was CPU utilization. When you inspect `/proc/stat`, the very first line looks something like this:
+
+```text
+cpu  482910 1042 194820 18492040 12490 0 148 0 0 0
+```
+
+These numbers are **jiffies** (clock tick intervals) accumulated since the machine booted:
+1. `user`: Normal processes executing in user mode
+2. `nice`: Niced processes executing in user mode
+3. `system`: Processes executing in kernel mode
+4. `idle`: Twiddling thumbs with nothing to run
+5. `iowait`: Waiting for disk or network I/O
+6. `irq` & `softirq`: Handling hardware and software interrupts
+
+You can't get CPU usage from a single snapshot. CPU percentage only makes sense as a **rate of change over time**.
+
+In `src/main.cpp`, I implemented a 300ms sampling window:
+
+```cpp
+std::vector<std::vector<long long>> cpu() {
+    std::vector<std::vector<long long>> stats;
+    std::ifstream file("/proc/stat");
+    std::string line;
+
+    while (getline(file, line)) {
+        if (line.rfind("cpu", 0) == 0) {
+            std::stringstream ss(line);
+            std::string word;
+            long long user, nice, system, idle;
+            ss >> word >> user >> nice >> system >> idle;
+
+            long long active = user + nice + system;
+            long long total  = active + idle;
+            stats.push_back({active, total});
+        } else {
+            break;
+        }
+    }
+    return stats;
+}
+```
+
+Every 300ms, Trackit takes a new snapshot `curr` and compares it with `prev`:
+
+```cpp
+long long da = curr[0][0] - prev[0][0]; // Delta active jiffies
+long long dt = curr[0][1] - prev[0][1]; // Delta total jiffies
+
+if (dt > 0) {
+    cpu_usage = (float)da / dt;
+}
+```
+
+No subprocesses spawned, no `fork()` overhead. Just basic arithmetic on two kernel reads.
+
+---
+
+### Memory: Used vs. Available
+
+For RAM, `/proc/meminfo` holds the ground truth:
+
+```text
+MemTotal:       19787776 kB
+MemAvailable:    7892340 kB
+```
+
+A common beginner mistake is subtracting `MemFree` from `MemTotal`. But in Linux, unused RAM is wasted RAM; the kernel aggressively caches disk blocks and buffers. If you just check `MemFree`, your system will almost always look 90% full.
+
+Instead, `/proc/meminfo` provides `MemAvailable`—an estimate of how much memory the kernel can immediately reclaim for new applications without swapping.
+
+```cpp
+void systemusage(std::vector<std::string>& mem) {
+    std::ifstream file("/proc/meminfo");
+    std::string line;
+    long long memavl = 0, tmem = 0;
+    bool flag1 = false, flag2 = false;
+
+    while (getline(file, line)) {
+        if (line.find("MemTotal") != std::string::npos) {
+            std::stringstream ss(line);
+            std::string word, unit;
+            ss >> word >> tmem >> unit;
+            flag1 = true;
+            mem.push_back(std::to_string((double)tmem / (1024.0 * 1024.0)));
+        }
+        if (line.find("MemAvailable") != std::string::npos) {
+            std::stringstream ss(line);
+            std::string word, unit;
+            ss >> word >> memavl >> unit;
+            flag2 = true;
+            mem.push_back(std::to_string((double)memavl / (1024.0 * 1024.0)));
+        }
+        if (flag1 && flag2) {
+            mem.push_back(std::to_string((tmem - memavl) / (1024.0 * 1024.0)));
+            break;
+        }
+    }
+}
+```
+
+---
+
+### The Process Explorer: Parsing `/proc/[pid]/`
+
+To build the process table, Trackit opens `/proc` with `opendir("/proc")` and iterates through all directory entries. If the folder name consists entirely of digits, it corresponds to a live process ID (`PID`).
+
+For each PID:
+1. `/proc/[pid]/comm` gives the human-readable process name (e.g. `firefox-bin`, `code`, `next-server`).
+2. `/proc/[pid]/status` contains `VmRSS:`—the **Resident Set Size**, which represents the actual physical RAM currently occupied by the process in kilobytes.
+
+To keep the UI responsive, I capped the table at the top 200 memory consumers, updating once per second.
+
+---
+
+### Network Interfaces & Packet Drop Tracking
+
+For network statistics, `/proc/net/dev` exposes throughput, packets, and errors per interface (`eno1`, `wlo1`, `docker0`):
+
+```text
+Inter-|   Receive                                                |  Transmit
+ face |bytes    packets errs drop fifo frame compressed multicast|bytes    packets errs drop
+  wlo1: 18294021  14201    0  410    0     0          0         0  2910401   11204    0    0
+```
+
+Trackit parses both the global throughput (KB/s) and individual interface metrics. In the UI, any interface experiencing packet drops or errors gets flagged in red or orange so network issues are instantly visible.
+
+I also added a simple TCP connection counter that reads the line count of `/proc/net/tcp` every 2 seconds.
+
+---
+
+### Hardware-Accelerated UI: Dear ImGui & OpenGL 3.3
+
+I wanted a native desktop application that opened instantly without an Electron runtime.
+
+I chose **Dear ImGui** paired with **GLFW** and **GLAD** (OpenGL 3.3):
+- Immediate-mode UI paradigm: Every frame describes the UI from scratch, which is ideal for real-time telemetry graphs.
+- Scrolling plots: Used `ImGui::PlotLines` with a 100-sample sliding buffer to render CPU and network curves smoothly at 60 FPS.
+- Minimal footprint: The entire app runs at around **1.3% CPU** and under **90MB RAM**.
+
+---
+
+### Building Without Heavy Toolchains
+
+Rather than configuring complex CMake files, I wrote a single shell script (`build.sh`) that compiles `main.cpp` alongside the vendored GLAD and ImGui sources in one pass:
+
+```bash
+g++ -std=c++17 src/main.cpp \
+    glad/src/glad.c \
+    imgui/imgui.cpp \
+    imgui/imgui_draw.cpp \
+    imgui/imgui_tables.cpp \
+    imgui/imgui_widgets.cpp \
+    imgui/backends/imgui_impl_glfw.cpp \
+    imgui/backends/imgui_impl_opengl3.cpp \
+    -Iglad/include -Iimgui -lglfw -lGL -ldl -o trackit
+```
+
+I also bundled it as an `AppImage` (`Trackit-x86_64.AppImage`) so anyone on Linux can test it without installing build dependencies.
+
+---
+
+### What Building This Taught Me
+
+Building Trackit taught me more about operating systems than any lecture could. Seeing how the kernel exposes raw counters, understanding why virtual memory is structured the way it is, and learning how to keep monitoring loops non-intrusive gave me a deep respect for systems programming.
+
+Later on, when I wanted to monitor multiple remote machines instead of just my own laptop, the C++ sampling logic from Trackit became the direct foundation for my distributed observability project, **Panopteez**.

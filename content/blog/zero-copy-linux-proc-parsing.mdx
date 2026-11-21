@@ -1,0 +1,124 @@
+---
+title: "Zero-Copy Linux /proc Parsing: Avoiding malloc in High-Frequency Polling"
+date: "2026-09-15"
+excerpt: "How I reduced Trackit's CPU footprint to 1.3% by replacing std::ifstream with POSIX pread64, fixed 4096-byte stack buffers, and pointer tokenization."
+tags: ["cpp", "linux", "kernel", "systems", "performance"]
+---
+
+When building a real-time Linux telemetry monitor like **Trackit**, one metric matters above all else: **observer effect**. If your system monitor consumes 5% or 10% of CPU just to measure CPU, it corrupts the very workload it attempts to observe.
+
+During the initial prototype of Trackit, sampling `/proc/stat` and `/proc/meminfo` every 500ms resulted in an unexpected CPU footprint of **4.8%**. 
+
+For a desktop C++ application running on an 8-core CPU, that was unacceptable. 
+
+Here is the deep-dive into how I profiled the bottleneck using Linux `perf`, eliminated dynamic memory allocations, and dropped CPU overhead down to **1.3%**.
+
+---
+
+### The Naive Approach: The Hidden Cost of std::ifstream
+
+In standard modern C++, the textbook way to read a text file is using `std::ifstream`:
+
+```cpp
+// NAIVE IMPLEMENTATION: Hidden allocations on every 500ms tick
+std::ifstream file("/proc/stat");
+std::string line;
+while (std::getline(file, line)) {
+    std::stringstream ss(line);
+    std::string token;
+    while (ss >> token) {
+        // parse token
+    }
+}
+```
+
+This code looks clean and idiomatic. But under the hood, it is disastrous for a 500ms telemetry loop:
+1. **Dynamic Heap Allocations (`malloc`)**: `std::getline` allocates and re-allocates a `std::string` on the heap for every line. `std::stringstream` introduces its own internal heap buffer.
+2. **File Descriptor Churn**: Repeatedly opening and closing `/proc/stat` triggers `sys_openat` and `sys_close` context switches on every poll.
+3. **Cache Invalidation**: Allocating small string buffers all over the heap thrashes the CPU's L1/L2 data cache.
+
+---
+
+### Profiling with `perf stat`
+
+Running `perf stat -d ./trackit_naive` revealed the damage:
+```text
+  12,410,290      cycles
+   8,120,440      instructions              #    0.65  insn per cycle
+     410,120      cache-misses              #   18.24% of all L1-dcache accesses
+       1,920      page-faults
+```
+The high cache-miss rate was directly caused by heap fragmentation from string allocations.
+
+---
+
+### The Zero-Allocation Solution
+
+To fix this, I made three architectural changes:
+
+#### 1. Cached File Descriptors with POSIX `pread64`
+Instead of calling `open()` and `close()` every tick, Trackit opens `/proc/stat` and `/proc/meminfo` once at startup with `O_RDONLY` and keeps the file descriptors cached. On each 500ms tick, it calls `pread64(fd, buffer, 4096, 0)`. 
+
+`pread64` reads directly from offset 0 without modifying the file offset pointer, eliminating the need for `lseek()`.
+
+#### 2. Fixed Stack Buffer
+Linux kernel `/proc/stat` on typical systems is roughly 2KB to 3KB depending on core count. By allocating a fixed stack buffer:
+```cpp
+char buffer[4096];
+ssize_t bytes_read = pread64(proc_stat_fd, buffer, sizeof(buffer) - 1, 0);
+if (bytes_read <= 0) return;
+buffer[bytes_read] = '\0';
+```
+This guarantees **zero heap allocations**. The buffer resides directly in the thread's stack frame and stays warm in the CPU's L1 cache.
+
+#### 3. Zero-Copy Pointer Tokenization
+Instead of allocating strings, Trackit traverses the raw character buffer using pointer arithmetic:
+
+```cpp
+inline uint64_t parse_next_uint64(const char*& ptr) {
+    while (*ptr == ' ' || *ptr == '\t') ptr++;
+    uint64_t value = 0;
+    while (*ptr >= '0' && *ptr <= '9') {
+        value = value * 10 + (*ptr - '0');
+        ptr++;
+    }
+    return value;
+}
+```
+
+---
+
+### The Math: Calculating Jiffy Utilization Deltas
+
+Linux reports cumulative time spent in various states since system boot in units of USER_HZ (typically 100 jiffies per second). To calculate CPU load between two samples:
+
+```text
+User    = user + nice
+System  = system + irq + softirq
+ΔTotal  = ΔUser + ΔSystem + ΔIdle + ΔIOWait
+CPU %   = 100.0 * (1.0 - (ΔIdle / ΔTotal))
+```
+
+By storing only the previous tick's scalar integers, memory consumption is fixed at a few dozen bytes.
+
+---
+
+### Decoupling Telemetry Polling from OpenGL Render Loops
+
+Trackit renders its UI using Dear ImGui and OpenGL 3.3 at 60 FPS (16.6ms per frame). Polling `/proc` at 16.6ms would be wasteful.
+
+Instead, Trackit spawns a dedicated background POSIX worker thread that sleeps for 500ms using `nanosleep`. When new telemetry is parsed, it writes into a lock-free atomic circular ring buffer. The main OpenGL thread reads the latest snapshot during its render frame without ever blocking or causing frame drops.
+
+---
+
+### The Result
+
+Rerunning `perf stat` with the zero-allocation engine:
+```text
+   3,180,910      cycles                    # 74% reduction
+   5,420,100      instructions              # 1.70 insn per cycle
+      41,200      cache-misses              # 90% reduction
+          12      page-faults
+```
+
+CPU consumption dropped from **4.8%** to **1.3%**, delivering a lightweight, accurate monitor that respects the system it watches.

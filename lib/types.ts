@@ -6,6 +6,12 @@ export interface Profile {
   email: string;
   phone: string;
   location: string;
+  education: {
+    degree: string;
+    institution: string;
+    period: string;
+    cgpa: string;
+  };
   socials: {
     github: string;
     linkedin: string;
@@ -14,6 +20,7 @@ export interface Profile {
   };
   resumePath: string;
   stats: { label: string; value: string }[];
+  achievements: { title: string; detail: string; year?: string }[];
 }
 
 export interface Project {
@@ -24,6 +31,8 @@ export interface Project {
   live: string;
   image: string;
   featured: boolean;
+  metrics?: string;
+  badge?: string;
 }
 
 export interface SkillCategory {

@@ -1,22 +1,50 @@
 {
   "name": "Ashish Kumar Singh",
-  "tagline": "Systems Programmer • Full-Stack Developer • CS @ NIT Agartala",
-  "bio": "Third-year Computer Science undergraduate at NIT Agartala (CGPA 8.94) with hands-on experience building production-grade systems in C++ and Node.js. Engineered Trackit, a real-time Linux system monitor parsing the /proc filesystem at sub-second polling intervals with a 1.3% CPU footprint, and Panopteez, a multi-agent metrics pipeline ingesting from containerised C++ agents into PostgreSQL via a Prisma-backed REST API. Currently leading a 50+ member technical club at NIT Agartala.",
+  "tagline": "Systems Programmer & Backend Engineer • CS @ NIT Agartala",
+  "bio": "I am a 3rd-year Computer Science undergraduate at NIT Agartala (CGPA 8.94). I focus on low-level systems programming in C++, Linux kernel interfaces like /proc, and distributed telemetry infrastructure. I built Trackit, a real-time Linux system monitor that polls at 500ms intervals with a 1.3% CPU footprint, and Panopteez, a 5-node distributed ingestion pipeline. Currently President of the Data Science & AI Club at NIT Agartala.",
   "photo": "/images/profile.jpg",
   "email": "ashishsingh.cpr.edu@gmail.com",
   "phone": "+91-9835120696",
-  "location": "NIT Agartala, Tripura, India",
+  "location": "Agartala, Tripura, India",
+  "education": {
+    "degree": "B.Tech in Computer Science and Engineering",
+    "institution": "National Institute of Technology Agartala",
+    "period": "2024 – 2028",
+    "cgpa": "8.94 / 10.0"
+  },
   "socials": {
     "github": "https://github.com/Ashish-331",
     "linkedin": "https://www.linkedin.com/in/ashish-1-singh/",
     "leetcode": "https://leetcode.com/u/ashish-331/",
-    "codechef": ""
+    "codechef": "https://www.codechef.com/users/ashish_331"
   },
   "resumePath": "/resume.pdf",
   "stats": [
-    { "label": "LeetCode Problems", "value": "350+" },
-    { "label": "CodeChef Problems", "value": "250+" },
-    { "label": "CGPA", "value": "8.94" },
+    { "label": "LeetCode Solved", "value": "350+" },
+    { "label": "CodeChef Solved", "value": "250+" },
+    { "label": "NIT Agartala CGPA", "value": "8.94" },
     { "label": "Club Members Led", "value": "50+" }
+  ],
+  "achievements": [
+    {
+      "title": "Student of the Year",
+      "detail": "Awarded for academic standing, peer mentorship, and leadership at NIT Agartala.",
+      "year": "2025"
+    },
+    {
+      "title": "CodeChef Global Rank 418",
+      "detail": "Achieved Global Rank 418 in Starters 251 out of thousands of competitive programmers.",
+      "year": "2025"
+    },
+    {
+      "title": "JEE Main 2024: Top 1.34%",
+      "detail": "Ranked in top 1.34% nationally among 1.5+ million candidates across India.",
+      "year": "2024"
+    },
+    {
+      "title": "SIH 2025 College Round Winner",
+      "detail": "Led 6-member team to win college selection round and qualify for SIH regionals.",
+      "year": "2025"
+    }
   ]
 }
