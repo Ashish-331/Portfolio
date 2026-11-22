@@ -1,7 +1,7 @@
 {
   "name": "Ashish Kumar Singh",
-  "tagline": "Systems Programmer & Backend Engineer • CS @ NIT Agartala",
-  "bio": "I am a 3rd-year Computer Science undergraduate at NIT Agartala (CGPA 8.94). I focus on low-level systems programming in C++, Linux kernel interfaces like /proc, and distributed telemetry infrastructure. I built Trackit, a real-time Linux system monitor that polls at 500ms intervals with a 1.3% CPU footprint, and Panopteez, a 5-node distributed ingestion pipeline. Currently President of the Data Science & AI Club at NIT Agartala.",
+  "tagline": "Software Developer • Fullstack & Systems • AI & DSA Enthusiast",
+  "bio": "I am a 3rd-year Computer Science undergraduate at NIT Agartala (CGPA 8.94). I am a versatile software developer passionate about building across the entire stack — from responsive React/Next.js web applications and distributed backend services to low-overhead C++ tools and intelligent AI applications. Competitive programmer with 350+ LeetCode problems solved and 3-Star rating on CodeChef (Global Rank 418). Currently President of the Data Science & AI Club at NIT Agartala.",
   "photo": "/images/profile.jpg",
   "email": "ashishsingh.cpr.edu@gmail.com",
   "phone": "+91-9835120696",
@@ -21,19 +21,19 @@
   "resumePath": "/resume.pdf",
   "stats": [
     { "label": "LeetCode Solved", "value": "350+" },
-    { "label": "CodeChef Solved", "value": "250+" },
+    { "label": "CodeChef Rating", "value": "3★ (Rank 418)" },
     { "label": "NIT Agartala CGPA", "value": "8.94" },
     { "label": "Club Members Led", "value": "50+" }
   ],
   "achievements": [
     {
       "title": "Student of the Year",
-      "detail": "Awarded for academic standing, peer mentorship, and leadership at NIT Agartala.",
-      "year": "2025"
+      "detail": "Awarded Student of the Year at Grace Mission School for academic standing, leadership, and all-round excellence.",
+      "year": "School Honor"
     },
     {
-      "title": "CodeChef Global Rank 418",
-      "detail": "Achieved Global Rank 418 in Starters 251 out of thousands of competitive programmers.",
+      "title": "CodeChef 3-Star (Rank 418)",
+      "detail": "3-Star competitive programmer with Global Rank 418 in Starters 251 out of thousands of competitors (250+ solved).",
       "year": "2025"
     },
     {
@@ -42,8 +42,8 @@
       "year": "2024"
     },
     {
-      "title": "Academic Excellence Award",
-      "detail": "Maintained 8.94 CGPA across core Computer Science and Systems Engineering curriculum at NIT Agartala.",
+      "title": "Academic Excellence (8.94 CGPA)",
+      "detail": "Maintained 8.94 CGPA across core Computer Science and Engineering curriculum at NIT Agartala.",
       "year": "2025"
     }
   ]

@@ -131,7 +131,7 @@ export default function Skills({ skills }: { skills: SkillsType }) {
       <div className="max-w-6xl mx-auto px-6">
         <SectionHeading
           title="Technical Competencies"
-          subtitle="Core programming languages, systems toolchains, and verified implementation context"
+          subtitle="Full-stack frameworks, intelligent data systems, and verified implementation context"
         />
 
         {/* Selected Skill Context Callout */}

@@ -12,7 +12,7 @@ export default function Projects({ projects }: { projects: Project[] }) {
       <div className="max-w-6xl mx-auto px-6">
         <SectionHeading
           title="Projects"
-          subtitle="Low-overhead Linux tools, kernel monitors, and distributed telemetry pipelines"
+          subtitle="Full-stack web applications, AI active learning engines, and low-overhead systems"
         />
 
         {/* Flagship Wide Architecture Card */}

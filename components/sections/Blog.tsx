@@ -15,7 +15,7 @@ export default function Blog({ posts }: { posts: BlogPost[] }) {
       <div className="max-w-6xl mx-auto px-6">
         <SectionHeading
           title="Writing &amp; Notes"
-          subtitle="Technical documentation on POSIX internals, memory footprints, and low-level code"
+          subtitle="Technical deep-dives on systems engineering, algorithm performance, and architecture"
         />
 
         <div className="grid md:grid-cols-2 gap-6 mb-8">

@@ -2,7 +2,8 @@
 
 ## Identity & Professional Profile
 - Name: Ashish Kumar Singh
-- Current Role: 3rd Year B.Tech Computer Science & Engineering Undergraduate at NIT Agartala (National Institute of Technology Agartala).
+- Current Role: Software Developer & Fullstack Engineer; 3rd Year B.Tech CSE Undergraduate at NIT Agartala.
+- Passions & Domains: Full-stack web engineering, AI applications, Data Structures & Algorithms, and low-overhead systems programming.
 - Expected Graduation: May 2028.
 - Academic Performance: CGPA 8.94 / 10.0 (Consistently top of class).
 - Leadership: President of Data Science & AI Club (leading 50+ members across technical, outreach, and development teams).
@@ -13,7 +14,7 @@
   - GitHub: https://github.com/Ashish-331
   - LinkedIn: https://www.linkedin.com/in/ashish-1-singh/
   - LeetCode: https://leetcode.com/u/ashish-331/ (350+ solved)
-  - CodeChef: https://www.codechef.com/users/ashish_331 (Global Rank 418 in Starters 251, 250+ solved)
+  - CodeChef: https://www.codechef.com/users/ashish_331 (3-Star Coder, Global Rank 418 in Starters 251, 250+ solved)
 
 ## Core Engineering Domains
 1. **Low-Level & Systems Programming**:
@@ -62,7 +63,7 @@
    - Source: https://github.com/Ashish-331/Perigee
 
 ## Notable Accolades & Milestones
-- **Student of the Year (NIT Agartala, 2025)**: Recognized for leadership, peer mentorship, and academic excellence.
-- **CodeChef Starters 251**: Global Rank 418 out of thousands of competitive programmers.
+- **Student of the Year (Grace Mission School)**: Awarded Student of the Year at Grace Mission School for academic standing, leadership, and all-round excellence.
+- **CodeChef 3-Star (Starters 251)**: Global Rank 418 out of thousands of competitive programmers (250+ solved).
 - **JEE Main 2024**: Ranked in the Top 1.34% nationally among 1.5+ million candidates across India.
-- **Academic Standing**: Current CGPA 8.94 / 10.0 in Computer Science & Engineering.
+- **Academic Standing**: Current CGPA 8.94 / 10.0 in Computer Science & Engineering at NIT Agartala.

@@ -10,7 +10,7 @@ export default function Experience({ experience }: { experience: ExperienceType[
       <div className="max-w-4xl mx-auto px-6">
         <SectionHeading
           title="Experience &amp; Leadership"
-          subtitle="Club leadership at NIT Agartala, hackathons, and systems mentoring"
+          subtitle="Technical club leadership at NIT Agartala, workshops, and peer mentoring"
         />
         <div className="mt-8 space-y-4">
           {experience.map((exp, i) => (

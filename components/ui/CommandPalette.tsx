@@ -244,7 +244,7 @@ export default function CommandPalette({ isOpen, onClose, onOpenTerminal }: Comm
       id: 'ext-codechef',
       category: 'External',
       title: 'CodeChef Profile',
-      description: 'Global Rank 418 in Starters 251',
+      description: '3-Star Coder • Global Rank 418 in Starters 251',
       icon: <SiCodechef className="w-4 h-4 text-amber-600" />,
       perform: () => {
         window.open('https://www.codechef.com/users/ashish_331', '_blank');

@@ -65,33 +65,33 @@ Perigee is a high-concurrency career platform and hybrid search engine:
 - **Repository:** Explore the source at [github.com/Ashish-331/Perigee](https://github.com/Ashish-331/Perigee).`;
   }
 
-  if (query.includes('competitive') || query.includes('rating') || query.includes('leetcode') || query.includes('codechef')) {
+  if (query.includes('competitive') || query.includes('rating') || query.includes('leetcode') || query.includes('codechef') || query.includes('dsa')) {
     return `### Competitive Programming & Problem Solving
-
-Ashish practices competitive programming with a focus on data structures, graph algorithms, and amortized efficiency:
-
+ 
+Ashish is an active competitive programmer with strong fundamentals in algorithms, data structures, and amortized efficiency:
+ 
+- **CodeChef:** **3-Star Coder (Global Rank 418)** in Starters 251 out of thousands of competitors ([codechef.com/users/ashish_331](https://www.codechef.com/users/ashish_331)). 250+ solved.
 - **LeetCode:** **350+ Problems Solved** across Arrays, Binary Trees, Dynamic Programming, Graphs, and Heaps ([leetcode.com/u/ashish-331](https://leetcode.com/u/ashish-331/)).
-- **CodeChef:** **Global Rank 418** in Starters 251 out of thousands of competitors ([codechef.com/users/ashish_331](https://www.codechef.com/users/ashish_331)). 250+ solved.
 - **Academic Foundation:** Ranked in the **Top 1.34% nationally** in JEE Main 2024 out of 1.5M+ candidates. Current CGPA: **8.94 / 10.0** at NIT Agartala.`;
   }
 
   if (query.includes('strength') || query.includes('hire') || query.includes('intern') || query.includes('why')) {
     return `### Core Engineering Strengths
 
-Why Ashish is an exceptional candidate for Systems & Backend Engineering roles:
+Why Ashish is a strong candidate for Software Engineering, Full-Stack, and Systems roles:
 
-1. **Kernel & POSIX Intuition:** Unlike developers who rely exclusively on high-level wrappers, Ashish understands Linux kernel interfaces, memory mappings, and system call boundaries.
-2. **Proven Low-Resource Architecture:** Built Trackit to run at 1.3% CPU by bypassing fork costs and eliminating runtime heap churn.
-3. **End-to-End Distributed Systems:** Designed Panopteez from C++ daemon metrics gathering through containerized Express ingestion to relational storage.
-4. **Algorithmic Depth:** Designed probabilistic active learning engines (Movienator) and hybrid search retrieval systems (Perigee).
-5. **Leadership & Communication:** President of the Data Science & AI Club (leading 50+ peers) and Student of the Year recipient.
-6. **Availability:** Actively seeking **Summer 2025 / 2026 Systems & Backend Software Engineering Internships**.`;
+1. **Full-Stack Competence:** Proficient with modern React, Next.js, Node.js, Express, TypeScript, and SQL/Prisma pipelines.
+2. **Algorithmic & Problem Solving Depth:** 3-Star on CodeChef (Rank 418) and 350+ LeetCode problems solved across complex data structures.
+3. **AI & Data Systems:** Designed probabilistic active learning engines (Movienator) and hybrid search retrieval systems (Perigee).
+4. **Systems Intuition:** Deep understanding of Linux kernel interfaces (/proc), memory layouts, and C++ performance optimization.
+5. **Leadership & Accolades:** President of the Data Science & AI Club (leading 50+ peers) and Student of the Year recipient at Grace Mission School.
+6. **Availability:** Actively seeking **Software Developer & Engineering Internships**.`;
   }
 
-  return `### Ashish Kumar Singh — Systems & Backend Engineer
+  return `### Ashish Kumar Singh — Software Developer & Fullstack Engineer
 
 - **Education:** 3rd Year B.Tech CSE @ National Institute of Technology Agartala (**CGPA: 8.94 / 10.0**).
-- **Core Specialization:** Low-overhead Linux systems programming in C++17, kernel \`/proc\` parsing, distributed backend telemetry, and active learning engines.
+- **Core Engineering:** Full-stack web development (React, Next.js, Node/Express), intelligent AI platforms (FastAPI, Bayesian active learning, hybrid vector search), competitive programming (CodeChef 3★, LeetCode 350+), and low-overhead C++ systems tools.
 - **Featured Projects:**
   - **Trackit:** Real-time Linux monitor in C++17, Dear ImGui & OpenGL 3.3 (1.3% CPU, 89.4MB RSS).
   - **Panopteez:** 5-node distributed metric pipeline with C++ daemons, Node/Express, and PostgreSQL.

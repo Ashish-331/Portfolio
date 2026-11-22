@@ -8,8 +8,8 @@ import ThemeToggle from '@/components/ui/ThemeToggle';
 
 const navLinks = [
   { name: 'Background', href: '/#about' },
-  { name: 'Systems & Code', href: '/#projects' },
-  { name: 'Competencies', href: '/#skills' },
+  { name: 'Projects', href: '/#projects' },
+  { name: 'Skills', href: '/#skills' },
   { name: 'Leadership', href: '/#experience' },
   { name: 'Articles', href: '/#blog' },
   { name: 'Contact', href: '/#contact' },

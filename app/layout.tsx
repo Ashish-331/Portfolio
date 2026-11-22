@@ -29,34 +29,40 @@ const monoFont = IBM_Plex_Mono({
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://ashish-singh.dev'),
-  title: 'Ashish Kumar Singh — Systems Programmer & Backend Engineer',
+  title: 'Ashish Kumar Singh — Software Developer & Fullstack Engineer',
   description:
-    'Systems programmer and backend engineer. 3rd Year CSE @ NIT Agartala (CGPA 8.94). Creator of Trackit (1.3% CPU Linux /proc system monitor) and Panopteez (Distributed metrics pipeline in C++ and Node.js).',
+    'Software developer and full-stack engineer. 3rd Year CSE @ NIT Agartala (CGPA 8.94). Building modern web applications, AI tools, low-overhead systems, and competitive programming (CodeChef 3★, LeetCode 350+).',
   keywords: [
     'Ashish Kumar Singh',
     'NIT Agartala',
-    'Systems Programmer',
+    'Software Developer',
+    'Fullstack Engineer',
+    'DSA Enthusiast',
+    'Systems Enthusiast',
+    'AI Developer',
+    'React',
+    'Next.js',
+    'Node.js',
+    'Python',
+    'FastAPI',
     'C++',
-    'Linux kernel',
-    'proc filesystem',
-    'Backend Engineer',
+    'CodeChef 3-Star',
+    'LeetCode',
     'Trackit',
     'Panopteez',
-    'Distributed Systems',
-    'LeetCode',
   ],
   authors: [{ name: 'Ashish Kumar Singh', url: 'https://github.com/Ashish-331' }],
   openGraph: {
-    title: 'Ashish Kumar Singh — Systems Programmer & Backend Engineer',
+    title: 'Ashish Kumar Singh — Software Developer & Fullstack Engineer',
     description:
-      'Systems programmer and backend engineer. 3rd Year CSE @ NIT Agartala (CGPA 8.94). Creator of Trackit and Panopteez.',
+      'Software developer and full-stack engineer. 3rd Year CSE @ NIT Agartala (CGPA 8.94). Building modern web applications, AI tools, low-overhead systems, and competitive programming (CodeChef 3★, LeetCode 350+).',
     type: 'website',
   },
   twitter: {
     card: 'summary',
-    title: 'Ashish Kumar Singh — Systems Programmer & Backend Engineer',
+    title: 'Ashish Kumar Singh — Software Developer & Fullstack Engineer',
     description:
-      'Systems programmer and backend engineer. 3rd Year CSE @ NIT Agartala (CGPA 8.94). Creator of Trackit and Panopteez.',
+      'Software developer and full-stack engineer. 3rd Year CSE @ NIT Agartala (CGPA 8.94). Building modern web applications, AI tools, low-overhead systems, and competitive programming (CodeChef 3★, LeetCode 350+).',
   },
 };
 

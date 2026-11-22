@@ -82,7 +82,7 @@ function renderInline(text: string) {
 const INITIAL_MESSAGE: ChatMessage = {
   role: 'assistant',
   content:
-    "ashish-cli v1.4.0 (x86_64-pc-linux-gnu)\nType a query or pick a command below to inspect C++ Linux kernel interfaces, Trackit benchmarks, Panopteez distributed pipeline, or NIT Agartala credentials.",
+    "ashish-cli v2.0.0 (x86_64-pc-linux-gnu)\nType a query or pick a command below to inspect full-stack web platforms, AI deduction engines, Trackit C++ benchmarks, DSA achievements, or academic credentials.",
 };
 
 export default function SystemsTerminalModal({

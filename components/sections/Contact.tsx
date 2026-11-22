@@ -67,7 +67,7 @@ export default function Contact({ profile }: { profile: Profile }) {
       <div className="max-w-5xl mx-auto px-6">
         <SectionHeading
           title="Contact"
-          subtitle="Available for Systems, Low-Level C++, and Backend Software Engineering Internships"
+          subtitle="Open for Software Engineering, Full-Stack, AI, and Systems Internships"
         />
 
         <div className="grid md:grid-cols-2 gap-10 items-start">
@@ -80,7 +80,7 @@ export default function Contact({ profile }: { profile: Profile }) {
             className="space-y-6"
           >
             <p className="text-sm sm:text-base text-gray-600 dark:text-gray-300 leading-relaxed">
-              I am actively evaluating software engineering internships focusing on systems programming, kernel tooling, distributed ingestion, or database performance. Reach out directly via the form or email.
+              I am actively seeking software engineering and developer internships across full-stack web platforms, intelligent AI systems, algorithmic software, or low-overhead infrastructure. Reach out directly via the form or email.
             </p>
 
             <div className="space-y-3 text-xs">

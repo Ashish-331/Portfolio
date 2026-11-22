@@ -14,12 +14,12 @@ export default function About({ profile }: { profile: Profile }) {
       <div className="max-w-6xl mx-auto px-6">
         <SectionHeading
           title="About &amp; Background"
-          subtitle="Systems programming, Linux kernel observability, and academic background"
+          subtitle="Full-stack development, intelligent systems, algorithms, and academic background"
         />
 
         {/* 2-Column Split: Editorial Bio + Education & Key Milestones */}
         <div className="grid lg:grid-cols-12 gap-10 items-start mb-12">
-          {/* Left Column (7 cols): Systems Philosophy & Narrative */}
+          {/* Left Column (7 cols): Developer Philosophy & Narrative */}
           <motion.div
             initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 12 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -42,15 +42,15 @@ export default function About({ profile }: { profile: Profile }) {
                 )}
                 <div className="space-y-3 flex-1">
                   <p>
-                    I am a 3rd-year Computer Science undergraduate at NIT Agartala with a current CGPA of 8.94. I focus on writing resource-conscious software in C++: reading directly from POSIX and Linux kernel structures to avoid unnecessary overhead.
+                    I am a 3rd-year Computer Science undergraduate at NIT Agartala with a CGPA of 8.94. As a developer, I thrive across multiple domains — from modern full-stack web platforms and AI-driven applications to competitive programming and low-overhead systems engineering.
                   </p>
                   <p>
-                    When building <strong className="font-semibold text-gray-900 dark:text-white">Trackit</strong>, I parsed <code className="text-xs font-mono px-1.5 py-0.5 rounded bg-gray-100 dark:bg-slate-800 text-emerald-700 dark:text-emerald-400 border border-gray-200 dark:border-slate-700">/proc/stat</code> and <code className="text-xs font-mono px-1.5 py-0.5 rounded bg-gray-100 dark:bg-slate-800 text-emerald-700 dark:text-emerald-400 border border-gray-200 dark:border-slate-700">/proc/meminfo</code> directly with memory-mapped buffers, eliminating subprocess fork costs and delivering a live 60-FPS telemetry dashboard on OpenGL with just 1.3% CPU load.
+                    Whether building high-concurrency search engines like <strong className="font-semibold text-gray-900 dark:text-white">Perigee</strong>, active learning Bayesian deduction engines in Python, solving DSA problems (<strong className="font-semibold text-gray-900 dark:text-white">3★ on CodeChef</strong>, 350+ LeetCode), or writing C++ tools that read directly from Linux kernel <code className="text-xs font-mono px-1.5 py-0.5 rounded bg-gray-100 dark:bg-slate-800 text-emerald-700 dark:text-emerald-400 border border-gray-200 dark:border-slate-700">/proc</code> to achieve a 1.3% CPU footprint in <strong className="font-semibold text-gray-900 dark:text-white">Trackit</strong> — I focus on crafting clean, resilient, and well-architected software.
                   </p>
                 </div>
               </div>
               <p>
-                As President of the Data Science &amp; AI Club (50+ members), I organize technical workshops on systems, machine learning pipelines, and lead student hackathon teams.
+                On campus, I serve as President of the Data Science &amp; AI Club (leading 50+ members), mentoring peers and hosting workshops on full-stack web engineering, machine learning pipelines, and competitive programming. Prior to college, I was honored with the <strong className="font-semibold text-gray-900 dark:text-white">Student of the Year</strong> award at Grace Mission School for academic distinction and all-round leadership.
               </p>
             </div>
 

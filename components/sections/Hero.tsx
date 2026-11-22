@@ -19,6 +19,14 @@ import { SiLeetcode, SiCodechef } from 'react-icons/si';
 import { useToast } from '@/components/ui/Toast';
 import type { Profile } from '@/lib/types';
 
+const ROLES = [
+  'Software Developer',
+  'DSA Enthusiast',
+  'Systems Enthusiast',
+  'AI Developer',
+  'Fullstack Engineer',
+];
+
 export default function Hero({
   profile,
   onOpenCommandPalette,
@@ -30,6 +38,49 @@ export default function Hero({
   const { toast } = useToast();
   const [copied, setCopied] = useState(false);
   const [currentTime, setCurrentTime] = useState<string>('');
+
+  // Typewriter Keystroke Animation State
+  const [roleIndex, setRoleIndex] = useState(0);
+  const [currentText, setCurrentText] = useState(ROLES[0]);
+  const [isDeleting, setIsDeleting] = useState(false);
+
+  const displayedRole = shouldReduceMotion ? ROLES[0] : currentText;
+
+  useEffect(() => {
+    if (shouldReduceMotion) return;
+
+    const currentFullText = ROLES[roleIndex];
+    let timer: NodeJS.Timeout;
+
+    if (!isDeleting) {
+      if (currentText.length < currentFullText.length) {
+        // Natural typing cadence (85ms per character)
+        timer = setTimeout(() => {
+          setCurrentText(currentFullText.slice(0, currentText.length + 1));
+        }, 85);
+      } else {
+        // Pause at the end of the typed word so the reader absorbs it
+        timer = setTimeout(() => {
+          setIsDeleting(true);
+        }, 1800);
+      }
+    } else {
+      if (currentText.length > 0) {
+        // Deleting characters quickly (45ms per character)
+        timer = setTimeout(() => {
+          setCurrentText(currentFullText.slice(0, currentText.length - 1));
+        }, 45);
+      } else {
+        // Done deleting; pause briefly then switch to next role
+        timer = setTimeout(() => {
+          setIsDeleting(false);
+          setRoleIndex((prev) => (prev + 1) % ROLES.length);
+        }, 300);
+      }
+    }
+
+    return () => clearTimeout(timer);
+  }, [currentText, isDeleting, roleIndex, shouldReduceMotion]);
 
   useEffect(() => {
     const updateTime = () => {
@@ -99,7 +150,7 @@ export default function Hero({
                   <span className="font-semibold">NIT Agartala &bull; CSE &apos;28 &bull; CGPA 8.94</span>
                 </div>
                 <div className="flex flex-wrap items-center gap-2 text-[11px] text-gray-500 dark:text-gray-400 mt-0.5">
-                  <span>Systems Programmer &bull; Agartala, India</span>
+                  <span>Software Developer &bull; Full-Stack, AI &amp; Systems &bull; Agartala, India</span>
                   {currentTime && (
                     <>
                       <span>&bull;</span>
@@ -112,20 +163,26 @@ export default function Hero({
               </div>
             </div>
 
-            {/* Solid, Clear Headline */}
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-normal tracking-tight text-gray-950 dark:text-gray-50 mb-5 leading-[1.18]">
-              Systems programmer building low-overhead Linux tools and distributed backend pipelines.
+            {/* Keystroke Animated Headline */}
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-normal tracking-tight text-gray-950 dark:text-gray-50 mb-5 leading-[1.2]">
+              I am a{' '}
+              <span className="text-emerald-600 dark:text-emerald-400 font-mono font-medium underline decoration-emerald-500/30 underline-offset-4">
+                {displayedRole}
+              </span>
+              <span
+                aria-hidden="true"
+                className="inline-block w-[2px] h-[0.85em] bg-emerald-500 dark:bg-emerald-400 animate-pulse ml-1 align-baseline"
+              />
+              <span className="block text-xl sm:text-2xl lg:text-3xl font-sans text-gray-600 dark:text-gray-400 font-normal mt-2.5">
+                building full-stack web platforms, high-performance systems &amp; intelligent tools.
+              </span>
             </h1>
 
             {/* Direct, Honest Bio */}
             <p className="text-base text-gray-600 dark:text-gray-300 leading-relaxed mb-6 max-w-xl">
-              I am a 3rd-year Computer Science student at NIT Agartala. I write C++ tools that read directly from Linux kernel interfaces like{' '}
-              <code className="text-xs font-mono px-1.5 py-0.5 rounded bg-gray-100 dark:bg-slate-800 text-emerald-700 dark:text-emerald-400 border border-gray-200 dark:border-slate-700">
-                /proc
-              </code>{' '}
-              to avoid runtime overhead, and architect containerized metric pipelines. Creator of{' '}
-              <strong className="font-semibold text-gray-900 dark:text-white">Trackit</strong> (1.3% CPU Linux monitor) and{' '}
-              <strong className="font-semibold text-gray-900 dark:text-white">Panopteez</strong> (5-node metrics pipeline).
+              I am a 3rd-year Computer Science student at NIT Agartala passionate about software development across the stack. I build responsive full-stack applications, explore AI active learning and hybrid search algorithms, solve DSA problems (CodeChef 3★, LeetCode 350+), and engineer low-overhead C++ systems tools like{' '}
+              <strong className="font-semibold text-gray-900 dark:text-white">Trackit</strong> and{' '}
+              <strong className="font-semibold text-gray-900 dark:text-white">Panopteez</strong>.
             </p>
 
             {/* Action Buttons: Clean & Functional */}
@@ -225,7 +282,7 @@ export default function Hero({
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-md bg-gray-100 dark:bg-slate-800 text-gray-700 dark:text-gray-300 hover:text-amber-500 border border-gray-200 dark:border-slate-700 text-xs font-mono font-medium transition-colors"
                     aria-label="LeetCode Profile"
-                    title="LeetCode Profile"
+                    title="LeetCode: 350+ Solved"
                   >
                     <SiLeetcode className="w-3.5 h-3.5 text-amber-500" />
                     <span>350+ Solved</span>
@@ -238,10 +295,10 @@ export default function Hero({
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-md bg-gray-100 dark:bg-slate-800 text-gray-700 dark:text-gray-300 hover:text-amber-600 border border-gray-200 dark:border-slate-700 text-xs font-mono font-medium transition-colors"
                     aria-label="CodeChef Profile"
-                    title="CodeChef Profile"
+                    title="CodeChef: 3-Star (Rank 418)"
                   >
                     <SiCodechef className="w-3.5 h-3.5 text-amber-600" />
-                    <span>Rank 418</span>
+                    <span>3★ (Rank 418)</span>
                   </a>
                 )}
               </div>
@@ -267,7 +324,25 @@ export default function Hero({
               <div className="space-y-3.5 text-xs leading-relaxed">
                 <div>
                   <span className="text-[11px] font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400 block mb-0.5">
-                    Primary Systems Stack
+                    Full-Stack &amp; Web Development
+                  </span>
+                  <span className="font-semibold text-gray-900 dark:text-white">
+                    React / Next.js / Node.js / Express / TypeScript / Tailwind
+                  </span>
+                </div>
+
+                <div>
+                  <span className="text-[11px] font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400 block mb-0.5">
+                    AI &amp; Data Engineering
+                  </span>
+                  <span className="font-semibold text-gray-900 dark:text-white">
+                    Python 3.12 / FastAPI / Vertex AI / NumPy / BigQuery
+                  </span>
+                </div>
+
+                <div>
+                  <span className="text-[11px] font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400 block mb-0.5">
+                    Systems &amp; Performance
                   </span>
                   <span className="font-semibold text-gray-900 dark:text-white">
                     C++17 / Linux Kernel /proc / Dear ImGui / OpenGL 3.3
@@ -276,37 +351,19 @@ export default function Hero({
 
                 <div>
                   <span className="text-[11px] font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400 block mb-0.5">
-                    Backend &amp; Infrastructure
+                    Competitive Programming &amp; DSA
                   </span>
                   <span className="font-semibold text-gray-900 dark:text-white">
-                    Node.js / Express / PostgreSQL / Prisma / Docker Compose
+                    LeetCode 350+ • CodeChef 3★ (Global Rank 418)
                   </span>
                 </div>
 
                 <div>
                   <span className="text-[11px] font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400 block mb-0.5">
-                    Competitive Programming
+                    Academic Standing &amp; Leadership
                   </span>
                   <span className="font-semibold text-gray-900 dark:text-white">
-                    LeetCode 350+ • CodeChef Global Rank 418 (250+)
-                  </span>
-                </div>
-
-                <div>
-                  <span className="text-[11px] font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400 block mb-0.5">
-                    Academic Standing
-                  </span>
-                  <span className="font-semibold text-gray-900 dark:text-white">
-                    NIT Agartala B.Tech CSE • CGPA: 8.94 / 10.0
-                  </span>
-                </div>
-
-                <div>
-                  <span className="text-[11px] font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400 block mb-0.5">
-                    Leadership
-                  </span>
-                  <span className="font-semibold text-gray-900 dark:text-white">
-                    President, Data Science &amp; AI Club (50+ members)
+                    NIT Agartala CSE (8.94 CGPA) • President, Data Science &amp; AI Club
                   </span>
                 </div>
               </div>
@@ -314,8 +371,8 @@ export default function Hero({
               {/* Bottom Quick Metric Pills */}
               <div className="mt-5 pt-4 border-t border-gray-200 dark:border-slate-800 grid grid-cols-2 gap-2 text-[11px] font-mono">
                 <div className="p-2 rounded bg-white dark:bg-slate-900/80 border border-gray-200/80 dark:border-slate-800 text-center">
-                  <span className="text-gray-400 block text-[10px]">Trackit Overhead</span>
-                  <span className="font-semibold text-emerald-600 dark:text-emerald-400">1.3% CPU • 89MB</span>
+                  <span className="text-gray-400 block text-[10px]">CodeChef Rating</span>
+                  <span className="font-semibold text-emerald-600 dark:text-emerald-400">3★ • Rank 418</span>
                 </div>
                 <div className="p-2 rounded bg-white dark:bg-slate-900/80 border border-gray-200/80 dark:border-slate-800 text-center">
                   <span className="text-gray-400 block text-[10px]">JEE Main 2024</span>
